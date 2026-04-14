@@ -1,33 +1,45 @@
 const timeDisplay = document.getElementById("time-display");
 const btnPlay = document.getElementById("btn-play");
 const btnPause = document.getElementById("btn-pause");
+const itemDisplay = document.getElementById("item-display")
 
-let timerId = null; // Is null when the timer isn't running
-let time = 0; // Number of elapsed seconds
+// TEMP -- IMPORTANT: All item lists must be sorted by price
+const ItemList = [
+	{name: "drink", price: 2},
+	{name: "fries", price: 3},
+	{name: "bigMac", price: 5},
+	{name: "bigMac_menu", price: 10}
+];
 
-let salary = 1; // Salary in $/s
-let balance = 0;
-nextItem = {"name":"BigMac", "price":10.0} // To fix: function that selects the next item
+const nextId = 0; // A global to keep track of IDs
 
+const state = {
+	timerId: null, // Is null when the timer isn't running
+	time: 0, // Number of elapsed seconds
+	salary: 1, // Salary in $/s
+	balance: 0,
+	purchasedItems: []
+};
 
 // Starts the timer
 function play() {
-	if (timerId) return; // Does nothing if the timer is running
-	timerId = setInterval(tick, 1000) // Refresh rate in miliseconds
+	if (state.timerId) return; // Does nothing if the timer is running
+	state.timerId = setInterval(tick, 1000) // Refresh rate in miliseconds
 }
 
 // Pauses the timer
 function pause() {
-	if (!timerId) return; // Does nothing if the timer isn't running
-	clearInterval(timerId);
-	timerId = null;
+	if (!state.timerId) return; // Does nothing if the timer isn't running
+	clearInterval(state.timerId);
+	state.timerId = null;
 }
 
 function tick() {
-	time += 1;
-	balance = salary * time;
-	checkBalance();
-	renderTime(time);
+	state.time += 1;
+	state.balance += state.salary;
+	[state.balance, state.placedItems] = tryPurchase(state.balance, state.placedItems);
+	renderTime(state.time);
+	console.log(`balance: ${state.balance}`); // DELETE
 }
 
 // Formats and displays the time
@@ -43,15 +55,11 @@ function renderTime(time) {
 	timeDisplay.textContent = displayString; // Update the display timer
 }
 
-// Checks if the user has enough for a new item. If so displays it updates balance
-function checkBalance(balance) {
-	if (!nextTime) selectNewItem() // Selects a new item if there is none
+// Attemps to purchase a new item or combine current items and balance into a more expensive item
+function tryPurchase(balance, placedItems) {
 
-	while (balance > nextItem[prime]) { // While we are able, get new items
-		display(nextItem);
-		balance -= nextItem[price];
-		//selectNewItem()
-	}
+	
+	return [balance, placedItems]
 }
 
 // Randomly selects the next item to purchase. Avoids selecting the same item two times in a row
@@ -61,8 +69,18 @@ function selectNewItem(nextItem) {
 
 // Displays the next item on screen
 function display(nextItem) {
-	// WIP
+	console.log("Appending item"); // DELETE
+	const img = document.createElement("img");
+
+	img.src = `images/${nextItem.name}.jpg`;
+	img.classList.add("img-fluid")
+
+
+	itemDisplay.appendChild(img);
+
+	//selectNewItem()
 }
 
+// Event Listeners
 btnPlay.addEventListener("click", play);
 btnPause.addEventListener("click", pause);
