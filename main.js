@@ -6,22 +6,33 @@ const btnPause = document.getElementById("btn-pause");
 const btnReset = document.getElementById("btn-reset");
 
 
-// TEMP -- IMPORTANT: All item lists must be sorted by price
-const ItemList = [
-	{name: "drink", price: 2},
-	{name: "fries", price: 3},
-	{name: "bigMac", price: 5},
-	{name: "bigMac_menu", price: 10}
-];
+// TEMP: TODO create functions to parse this from csv data
+export const ItemList = {
+	cheap: [
+		{name: "ketchup", price: 0.5, type: "cheap"},
+		{name: "drink", price: 2, type: "cheap"},
+		{name: "fries", price: 3, type: "cheap"}
+	],
+	normal: [
+		{name: "bigMac", price: 5, type: "normal"},
+		{name: "nuggets", price: 7, type: "normal"},
+		{name: "happyMeal", price: 8, type: "normal"}
+	],
+	expsensive: [
+		{name: "deluxe_bigMac", price: 10, type: "expensive"},
+		{name: "doubleBacon&Cheese", price: 12, type: "expensive"},
+		{name: "deluxe_ultraHamburger", price: 20, type: "expensive"}
+	]
+};
 
 const nextId = 0; // A global to keep track of IDs
 
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
-	salary: 0.5, // Salary in $/s
+	salary: 0.004, // Salary in $/s
 	balance: 0,
-	purchasedItems: []
+	inventory: []
 };
 
 
