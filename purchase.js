@@ -32,8 +32,8 @@ import { state } from "./main.js";
  * If over 60% of our items are cheap get a normal item.
  * If we have over 30% cheap items get an expensive item.
  * In any other case just buy a cheap item.
- * @param {*} itemList  List of dictionaries of item types available for purchase.
- * @param {*} inventory List of currently owned items.
+ * @param {object} itemList  List of dictionaries of item types available for purchase.
+ * @param {array} inventory List of currently owned items.
  * @returns Returns the next item to be purchased (dictionary.)
  */
 export function selectNextItem(itemList, inventory) {
@@ -53,7 +53,7 @@ export function selectNextItem(itemList, inventory) {
 /**
  * Attempts to purchase an item. If we can afford it the function returns true makes the purchase.
  * Otherwise returns false implying we need to wait to make the purchase.
- * @param {*} item The item (dictionary) to purchase.
+ * @param {object} item The item (dictionary) to purchase.
  * @returns true / false
  */
 export function purchase(item) {
@@ -87,8 +87,8 @@ export function purchase(item) {
 }
 /**
  * Return the sum of the value of the intentory by type of item.
- * @param {*} inventory List of currently owned items.
- * @param {*} type Type of item to filter currently owned items (cheap / normal / expensive)
+ * @param {array} inventory List of currently owned items.
+ * @param {string} type Type of item to filter currently owned items (cheap / normal / expensive)
  * @returns Sum of values.
  */
 function getInvValueByType(inventory, type) {
@@ -99,7 +99,7 @@ function getInvValueByType(inventory, type) {
 
 /**
  * Completes the purchase changing values in the db (does not render the new set of items. For this use renderInv).
- * @param {*} item The item (dict) to purchase.
+ * @param {object} item The item (dict) to purchase.
  */
 function makePurchase(item) {
 	// Sell items of lower type until we can afford the item.
@@ -117,8 +117,8 @@ function makePurchase(item) {
 	}
 
 	// Once we can afford the item we purchase it
-	balance -= item.value; // Spend the money
-	newItem = item;
+	state.balance -= item.value; // Spend the money
+	let newItem = item;
 	newItem.id = `item_${state.nextIdx}`; // We make a version of the purchased item with an index to keep track of it.
 	state.nextIdx++; // We update the master index.
 	state.inventory.pop(newItem);
@@ -128,9 +128,9 @@ function makePurchase(item) {
 /**
  * Returns the item of a given type in itemList list of which we have the least of in inventory.
  * If there is 1 or more items that we do not currently own it returns the first of these.
- * @param {*} itemList List of dictionaries of item types available for purchase.
- * @param {*} inventory List of currently owned items.
- * @param {*} type Type of item to filter currently owned items.
+ * @param {array} itemList List of dictionaries of item types available for purchase.
+ * @param {array} inventory List of currently owned items.
+ * @param {string} type Type of item to filter currently owned items.
  * @returns The item that we either don't currenly own or own the least of (dictionary).
  */
 function selectLeastOwned(itemList, inventory, type) {
@@ -147,14 +147,14 @@ function selectLeastOwned(itemList, inventory, type) {
 	}
 
 	// If we haven't found an item that we don't own then we select the item that we have the least of.
-	if (!leastOnwed) leastOwned = reducedItemList[ownedAmount.indexOf(Math.min(...ownedAmount))];
+	if (!leastOwned) leastOwned = reducedItemList[ownedAmount.indexOf(Math.min(...ownedAmount))];
 
 	return leastOwned;
 }
 
 /**
  * Returns the percentages of each type of item in our inventory.
- * @param {*} inventory List of currently owned items.
+ * @param {array} inventory List of currently owned items.
  * @returns Inventory spread: {cheap: ... , noraml: ... , expensive: ...}
  */
 function getInvTypeSpread(inventory) {
@@ -172,20 +172,20 @@ function getInvTypeSpread(inventory) {
 	let normalPerc = normalAmnt / inventory.length;
 	let expensivePerc = expensiveAmnt / inventory.length;
 	
-	return {cheap: cheapPerc, normal: normalPerc, expensive, expensivePerc};
+	return {cheap: cheapPerc, normal: normalPerc, expensive: expensivePerc};
 }
 
 /**
  * Returns true if item is in our inventory.
- * @param {*} item An item dictionary.
- * @param {*} inventory List of currently owned items.
+ * @param {object} item An item dictionary.
+ * @param {list} inventory List of currently owned items.
  * @returns true / false
  */
-function inItemList(item, inventory) {
+function inInventory(item, inventory) {
 	let inItemList = false;
 	let i = 0;
 
-	while (!inItemList && i < inInventory.length) {
+	while (!inItemList && i < inventory.length) {
 		if (inventory[i].name === item.name)
 			inItemList = true;
 	}

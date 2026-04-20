@@ -4,6 +4,7 @@ import { state } from "./main.js"
 
 const itemDisplay = document.getElementById("item-display");
 const timeDisplay = document.getElementById("time-display");
+const earningsDisplay = document.getElementById("earnings-display");
 
 
 
@@ -90,6 +91,8 @@ function isRendered(item, renderedInv) {
  * @param {*} item 
  */
 function renderItem(item) { // TEMP version
+	console.log("Rendering Item"); // DEBUG
+
 	const renderedItem = document.createElement("div");
 
 	renderedItem.text = `${item.name}\n${item.id}`;
