@@ -1,9 +1,22 @@
 // This file contains code for the timer portion of the page
 
+import {purchase, selectNextItem } from "./purchase.js"
+
+
 import { state } from "./main.js"
 
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
+
+/**
+ * Actions by the program every set interval (1 second). This function links the timer to the wider functionality of the program by attempting to make purhcases and rendering then when succesful.
+ */
+export function tick() {
+	state.time += 1;
+	state.balance += state.salary;
+	if (purchase(state.nextItem)) renderInv(); // Makes purchase if possible and if so rerenders the inventory.
+	renderTimerDisplay(state.time, state.salary);
+}
 
 /**
  * Starts the timer.
@@ -33,16 +46,6 @@ export function reset() {
 
 	state.time = 0;
 	renderTimerDisplay(state.time, state.salary); // Resets the display
-}
-
-/**
- * Actions by the program every set interval (1 second). This function links the timer to the wider functionality of the program.
- */
-export function tick() {
-	state.time += 1;
-	state.balance += state.salary;
-	//[state.balance, state.placedItems] = tryPurchase(state.balance, state.placedItems);
-	renderTimerDisplay(state.time, state.salary);
 }
 
 /**

@@ -25,32 +25,18 @@ export const ItemList = {
 	]
 };
 
-const nextId = 0; // A global to keep track of IDs
-
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
 	salary: 0.004, // Salary in $/s
 	balance: 0,
-	inventory: []
+	inventory: [],
+	nextItem: null,
+	nextId: 0
 };
 
 
 
-
-
-
-// Attemps to purchase a new item or combine current items and balance into a more expensive item
-function tryPurchase(balance, placedItems) {
-
-	
-	return [balance, placedItems]
-}
-
-// Randomly selects the next item to purchase. Avoids selecting the same item two times in a row
-function selectNewItem(nextItem) {
-	// WIP
-}
 
 // Displays the next item on screen
 function display(nextItem) {
