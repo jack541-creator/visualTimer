@@ -119,7 +119,7 @@ function makePurchase(item) {
 	// Once we can afford the item we purchase it
 	balance -= item.value; // Spend the money
 	newItem = item;
-	newItem.idx = `item_${state.nextIdx}`; // We make a version of the purchased item with an index to keep track of it.
+	newItem.id = `item_${state.nextIdx}`; // We make a version of the purchased item with an index to keep track of it.
 	state.nextIdx++; // We update the master index.
 	state.inventory.pop(newItem);
 }

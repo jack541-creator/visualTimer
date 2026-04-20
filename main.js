@@ -1,6 +1,6 @@
 import * as timer from "./timer.js";
 
-const itemDisplay = document.getElementById("item-display")
+
 const btnPlay = document.getElementById("btn-play");
 const btnPause = document.getElementById("btn-pause");
 const btnReset = document.getElementById("btn-reset");
@@ -36,21 +36,6 @@ export const state = {
 };
 
 
-
-
-// Displays the next item on screen
-function display(nextItem) {
-	console.log("Appending item"); // DELETE
-	const img = document.createElement("img");
-
-	img.src = `images/${nextItem.name}.jpg`;
-	img.classList.add("img-fluid")
-
-
-	itemDisplay.appendChild(img);
-
-	//selectNewItem()
-}
 
 // Event Listeners
 btnPlay.addEventListener("click", timer.play);

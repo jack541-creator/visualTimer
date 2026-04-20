@@ -1,9 +1,10 @@
 // This file contains code for the timer portion of the page
 
 import {purchase, selectNextItem } from "./purchase.js"
+import {renderTimerDisplay, renderInv} from "./.render.js"
 
 
-import { state } from "./main.js"
+import { itemList, state } from "./main.js"
 
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
@@ -14,7 +15,10 @@ const earningsDisplay = document.getElementById("earnings-display");
 export function tick() {
 	state.time += 1;
 	state.balance += state.salary;
-	if (purchase(state.nextItem)) renderInv(); // Makes purchase if possible and if so rerenders the inventory.
+	if (purchase(state.nextItem)) {
+		selectNextItem(itemList, state);
+		renderInv(); // Makes purchase if possible and if so rerenders the inventory.
+	}
 	renderTimerDisplay(state.time, state.salary);
 }
 
@@ -26,7 +30,6 @@ export function play() {
 	if (state.timerId) return; // Does nothing if the timer is running
 	state.timerId = setInterval(tick, 1000) // Refresh rate in miliseconds
 }
-
 
 /**
  * Pauses the timer.
@@ -46,25 +49,4 @@ export function reset() {
 
 	state.time = 0;
 	renderTimerDisplay(state.time, state.salary); // Resets the display
-}
-
-/**
- * Updates the timer display in the html.
- * @param {*} time Time to display in seconds.
- * @param {*} salary $/s to calculate total earnings.
- */
-function renderTimerDisplay(time, salary) {
-	let hours = Math.trunc(time / 3600);
-	time %= 3600;
-
-	let minutes = Math.trunc(time / 60);
-	let seconds = time % 60;
-
-	let displayTimeString = `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
-
-	let earnings = time * salary;
-	let displayEarningsString = `\$${earnings.toFixed(2)}`
-
-	timeDisplay.textContent = displayTimeString;
-	earningsDisplay.textContent = displayEarningsString;
 }
