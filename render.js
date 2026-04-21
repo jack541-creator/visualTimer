@@ -10,15 +10,16 @@ const earningsDisplay = document.getElementById("earnings-display");
  * Renders the current inventory in the html.
  */
 export function renderInv() {
-	if (DEBUG) console.log("Rending inventory"); // debug
+	if (DEBUG) console.log("Rendering inventory"); // debug
 
 	// Note: renderedItem and renderedInv refer to html elements as opposed to item and inventory which are data structures.
 	let renderedInv = itemDisplay.children;
 
-	// We remove all rendered items we no longer own.
-	for (let i = renderInv.length - 1; i >= 0; i--) {
-		let renderedItem = renderInv[i];
+	// We remove all rendered items we no longer own. Loop backwards to avoid index issues
+	for (let i = renderedInv.length - 1; i >= 0; i--) {
+		let renderedItem = renderedInv[i];
 		if (!isOwnedRendered(renderedItem, state.inventory)) {
+			if (DEBUG) console.log(`Unrendering ${renderedItem.id}`) // debug
 			renderedItem.remove();
 		}
 	}
@@ -75,9 +76,9 @@ function isOwnedRendered(renderedItem, inventory) {
 	let owned = false;
 	let i = 0;
 
-	while (!owned && i < inventory) {
+	while (!owned && i < inventory.length) {
 		if (renderedItem.id === inventory[i].id) owned = true;
-		else i++;
+		i++;
 	}
 
 	return owned;

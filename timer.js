@@ -21,7 +21,7 @@ export function tick() {
 	}
 	renderTimerDisplay(state.time, state.salary);
 
-	if (DEBUG) console.log(`Current balance: ${state.balance}`); // debug
+	if (DEBUG) console.log(`Current balance: ${state.balance}\n\n`); // debug
 }
 
 /**
@@ -29,6 +29,8 @@ export function tick() {
  * @returns 
  */
 export function play() {
+	if (DEBUG) console.log("\nPlaying\n");
+
 	if (state.timerId) return; // Does nothing if the timer is running
 	state.timerId = setInterval(tick, 1000) // Refresh rate in miliseconds
 }
@@ -38,6 +40,8 @@ export function play() {
  * @returns 
  */
 export function pause() {
+	if (DEBUG) console.log("\nPausing\n");
+
 	if (!state.timerId) return; // Does nothing if the timer isn't running
 	clearInterval(state.timerId);
 	state.timerId = null;
@@ -48,7 +52,12 @@ export function pause() {
  */
 export function reset() {
 	pause();
-
 	state.time = 0;
-	renderTimerDisplay(state.time, state.salary); // Resets the display
+
+	if (DEBUG) console.log("\nRestting\n");
+
+	renderTimerDisplay(state.time, state.salary); // Resets the time display
+	state.inventory = []; // Resets inventory
+	renderInv(); // Resets inventory display
+	state.nextItem = selectNextItem();
 }

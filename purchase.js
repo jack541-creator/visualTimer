@@ -81,19 +81,20 @@ function makePurchase(item) {
 	while (state.balance < item.price) {
 		let i = 0;
 		while (state.inventory[i].type != sellType) i++; // Find next item of sellable type. Presumably if we need to sell at this point then there will be items to sell.
+		if (DEBUG) console.log(`Selling ${state.inventory[i].name}: ${state.inventory[i].id}. Balance ${state.balance}`); // debug
 		state.balance += state.inventory[i].price; // Get the money;
 		state.inventory.splice(i, 1); // Remove the item
 	}
 
 	// Once we can afford the item we purchase it
 	state.balance -= item.price; // Spend the money
-	let newItem = item;
+	let newItem = {...item}; // Shallow copy of item. I was having an issue where changing newItem would then change item.
 	newItem.id = `item_${state.nextId}`; // We make a version of the purchased item with an index to keep track of it.
 	state.nextId++; // We update the master index.
 	state.inventory.push(newItem);
 
 	if (DEBUG) console.log(`Balance after purchase: ${state.balance}`); // debug
-	if (DEBUG) console.log(`Current Inventory: ${state.inventory.map(x => x.name)}`); // debug
+	if (DEBUG) console.log(`Current Inventory: ${state.inventory.map(x => x.name + ": " + x.id)}`) // debug
 }
 
 /**
