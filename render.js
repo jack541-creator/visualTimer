@@ -6,7 +6,43 @@ const itemDisplay = document.getElementById("item-display");
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
 
+/**
+ * Renders the current inventory in the html.
+ */
+export function renderInv() {
+	if (DEBUG) console.log("Rending inventory"); // debug
 
+	// Note: renderedItem and renderedInv refer to html elements as opposed to item and inventory which are data structures.
+	let renderedInv = itemDisplay.children;
+
+	// We remove all rendered items we no longer own.
+	for (let i = renderInv.length - 1; i >= 0; i--) {
+		let renderedItem = renderInv[i];
+		if (!isOwnedRendered(renderedItem, state.inventory)) {
+			renderedItem.remove();
+		}
+	}
+
+	// We render all items that we own which aren't rendered.
+	for (let item of state.inventory) {
+		if (!isRendered(item, renderedInv)) renderItem(item);
+	}
+}
+
+/**
+ * TEMP VERSION. Appends the item on the html as a div with text.
+ * @param {*} item The item to be rendered.
+ */
+function renderItem(item) { // TEMP version
+	if (DEBUG) console.log(`Rendering ${item.name}: ${item.id}`); // debug
+
+	const renderedItem = document.createElement("p");
+
+	renderedItem.textContent = `${item.name}\n${item.id}`;
+	renderedItem.id = item.id;
+
+	itemDisplay.appendChild(renderedItem);
+}
 
 /**
  * Updates the timer display in the html.
@@ -27,29 +63,6 @@ export function renderTimerDisplay(time, salary) {
 
 	timeDisplay.textContent = displayTimeString;
 	earningsDisplay.textContent = displayEarningsString;
-}
-
-/**
- * Renders the current inventory in the html.
- */
-export function renderInv() {
-	if (DEBUG) console.log("Rending inventory."); // debug
-
-	// Note: renderedItem and renderedInv refer to html elements as opposed to item and inventory which are data structures.
-	let renderedInv = itemDisplay.children;
-
-	// We remove all rendered items we no longer own.
-	for (let i = renderInv.length - 1; i >= 0; i--) {
-		let renderedItem = renderInv[i];
-		if (!isOwnedRendered(renderedItem, state.inventory)) {
-			renderedItem.remove();
-		}
-	}
-
-	// We render all items that we own which aren't rendered.
-	for (item of state.inventory) {
-		if (!isRendered(item, renderedInv)) renderItem(item);
-	}
 }
 
 /**
@@ -80,42 +93,10 @@ function isRendered(item, renderedInv) {
 	let rendered = false;
 	let i = 0;
 
-	while (!rendered && i < renderInv.length) {
-		if (item.id == renderInv[i].id) rendered = true;
+	while (!rendered && i < renderedInv.length) {
+		if (item.id == renderedInv[i].id) rendered = true;
 		else i++;
 	}
 
 	return rendered;
-}
-
-/**
- * TEMP VERSION. Appends the item on the html as a div with text.
- * @param {*} item 
- */
-function renderItem(item) { // TEMP version
-	if (DEBUG) console.log("Rendering item"); // debug
-
-	console.log("Rendering Item"); // DEBUG
-
-	const renderedItem = document.createElement("div");
-
-	renderedItem.text = `${item.name}\n${item.id}`;
-	renderedItem.id = item.id;
-
-	itemDisplay.appendChild(renderedItem);
-}
-
-
-
-function display(nextItem) {
-	console.log("Appending item"); // DELETE
-	const img = document.createElement("img");
-
-	img.src = `images/${nextItem.name}.jpg`;
-	img.classList.add("img-fluid")
-
-
-	itemDisplay.appendChild(img);
-
-	//selectNewItem()
 }

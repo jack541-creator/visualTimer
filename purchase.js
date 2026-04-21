@@ -27,32 +27,6 @@
 import { state, DEBUG } from "./main.js";
 
 /**
- * Selects the next item that should be purchased with the following guidelines.
- * If we have 5 or less item buy a cheap item.
- * If over 60% of our items are cheap get a normal item.
- * If we have over 30% cheap items get an expensive item.
- * In any other case just buy a cheap item.
- * @param {object} itemList  List of dictionaries of item types available for purchase.
- * @param {array} inventory List of currently owned items.
- * @returns Returns the next item to be purchased (dictionary.)
- */
-export function selectNextItem(itemList, inventory) {
-	if (DEBUG) console.log("Selecting next item to purchase"); // debug
-
-	let nextItemType = null;
-
-	if (itemList.length <= 5) nextItemType = "cheap"; // If we have 5 or less item buy a cheap item
-	else {
-		let invTypeSpread = getInvTypeSpread(inventory);
-
-		if (invTypeSpread.cheap > 0.6) nextItemType = "normal"; // If over 60% of our items are cheap get a normal item
-		else if (invTypeSpread.normal > 0.3) nextItemType = "expensive"; // If we have over 30% cheap items get an expensive item
-		else nextItemType = "cheap"; // In any other case just buy a cheap item
-	}
-	return selectLeastOwned(itemList, inventory, nextItemType);
-}
-
-/**
  * Attempts to purchase an item. If we can afford it the function returns true makes the purchase.
  * Otherwise returns false implying we need to wait to make the purchase.
  * @param {object} item The item (dictionary) to purchase.
@@ -89,24 +63,14 @@ export function purchase(item) {
 	// If we can't we wait.
 	return purchased;
 }
-/**
- * Return the sum of the value of the intentory by type of item.
- * @param {array} inventory List of currently owned items.
- * @param {string} type Type of item to filter currently owned items (cheap / normal / expensive)
- * @returns Sum of values.
- */
-function getInvValueByType(inventory, type) {
-	let value = 0;
-	for (item of inventory.type) value += item.value;
-	return value;
-}
 
 /**
  * Completes the purchase changing values in the db (does not render the new set of items. For this use renderInv).
  * @param {object} item The item (dict) to purchase.
  */
 function makePurchase(item) {
-	if (DEBUG) console.log("Making purchase."); // debug
+	if (DEBUG) console.log("Making purchase"); // debug
+	if (DEBUG) console.log(`Balance before purchase: ${state.balance}`); // debug
 
 	// Sell items of lower type until we can afford the item.
 	// Presumably if the item is cheap then we should be able to afford it at this point without selling.
@@ -114,24 +78,53 @@ function makePurchase(item) {
 	if (item.type === "normal") sellType = "cheap";
 	else sellType = "normal";
 
-	while (state.balance < item.value) {
+	while (state.balance < item.price) {
 		let i = 0;
 		while (state.inventory[i].type != sellType) i++; // Find next item of sellable type. Presumably if we need to sell at this point then there will be items to sell.
-		state.balance += state.inventory[i].value; // Get the money;
+		state.balance += state.inventory[i].price; // Get the money;
 		state.inventory.splice(i, 1); // Remove the item
 	}
 
 	// Once we can afford the item we purchase it
-	state.balance -= item.value; // Spend the money
+	state.balance -= item.price; // Spend the money
 	let newItem = item;
-	newItem.id = `item_${state.nextIdx}`; // We make a version of the purchased item with an index to keep track of it.
-	state.nextIdx++; // We update the master index.
-	state.inventory.pop(newItem);
+	newItem.id = `item_${state.nextId}`; // We make a version of the purchased item with an index to keep track of it.
+	state.nextId++; // We update the master index.
+	state.inventory.push(newItem);
 
-	if (DEBUG) console.log(`Current Inventory: ${state.inventory}`); // debug
-
+	if (DEBUG) console.log(`Balance after purchase: ${state.balance}`); // debug
+	if (DEBUG) console.log(`Current Inventory: ${state.inventory.map(x => x.name)}`); // debug
 }
 
+/**
+ * Selects the next item that should be purchased with the following guidelines.
+ * If we have 5 or less item buy a cheap item.
+ * If over 60% of our items are cheap get a normal item.
+ * If we have over 30% cheap items get an expensive item.
+ * In any other case just buy a cheap item.
+ * @param {object} itemList  List of dictionaries of item types available for purchase.
+ * @param {array} inventory List of currently owned items.
+ * @returns Returns the next item to be purchased (dictionary.)
+ */
+export function selectNextItem(itemList, inventory) {
+	if (DEBUG) console.log("Selecting next item to purchase"); // debug
+
+	let nextItemType = null;
+
+	if (inventory.length <= 5) nextItemType = "cheap"; // If we have 5 or less item buy a cheap item
+	else {
+		let invTypeSpread = getInvTypeSpread(inventory);
+
+		if (invTypeSpread.cheap > 0.6) nextItemType = "normal"; // If over 60% of our items are cheap get a normal item
+		else if (invTypeSpread.normal > 0.3) nextItemType = "expensive"; // If we have over 30% cheap items get an expensive item
+		else nextItemType = "cheap"; // In any other case just buy a cheap item
+	}
+
+	let nextItem = selectLeastOwned(itemList, inventory, nextItemType);
+
+	if (DEBUG) console.log(`Selected: ${nextItem.name}`); // debug
+	return nextItem;
+}
 
 /**
  * Returns the item of a given type in itemList list of which we have the least of in inventory.
@@ -149,8 +142,9 @@ function selectLeastOwned(itemList, inventory, type) {
 
 	// Select the first found item that we don't already own. Else keep track of how many we own.
 	while (!leastOwned && i < reducedItemList.length) {
-		if (!inInventory(reducedItemList[i], inventory)) leastOwned = reducedItemList[i];
-		else ownedAmount[i]++;
+		let count = amountInInventory(reducedItemList[i], inventory);
+		if (count == 0) leastOwned = reducedItemList[i];
+		else ownedAmount[i] = count;
 		i++;
 	}
 
@@ -158,6 +152,20 @@ function selectLeastOwned(itemList, inventory, type) {
 	if (!leastOwned) leastOwned = reducedItemList[ownedAmount.indexOf(Math.min(...ownedAmount))];
 
 	return leastOwned;
+}
+
+/**
+ * Return the sum of the value of the intentory by type of item.
+ * @param {array} inventory List of currently owned items.
+ * @param {string} type Type of item to filter currently owned items (cheap / normal / expensive)
+ * @returns Sum of values.
+ */
+function getInvValueByType(inventory, type) {
+	let value = 0;
+	for (let item of inventory) {
+		if (item.type === type) value += item.price;
+	}
+	return value;
 }
 
 /**
@@ -170,7 +178,7 @@ function getInvTypeSpread(inventory) {
 	let normalAmnt = 0;
 	let expensiveAmnt = 0;
 
-	for (item of inventory) {
+	for (let item of inventory) {
 		if (item.type === "cheap") cheapAmnt++;
 		else if (item.type === "normal") normalAmnt++;
 		else expensiveAmnt++;
@@ -184,19 +192,18 @@ function getInvTypeSpread(inventory) {
 }
 
 /**
- * Returns true if item is in our inventory.
+ * Returns the number of item that we have in our inventory.
  * @param {object} item An item dictionary.
  * @param {list} inventory List of currently owned items.
- * @returns true / false
+ * @returns The number of item in inventory.
  */
-function inInventory(item, inventory) {
-	let inItemList = false;
+function amountInInventory(item, inventory) {
+	let count = 0;
 	let i = 0;
 
-	while (!inItemList && i < inventory.length) {
-		if (inventory[i].name === item.name)
-			inItemList = true;
+	for (let invItem of inventory) {
+		if (invItem.name == item.name) count++;
 	}
 
-	return inItemList;
+	return count;
 }

@@ -4,7 +4,7 @@ import {purchase, selectNextItem } from "./purchase.js"
 import {renderTimerDisplay, renderInv} from "./render.js"
 
 
-import { state, itemList } from "./main.js"
+import { state, itemList, DEBUG } from "./main.js"
 
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
@@ -16,10 +16,12 @@ export function tick() {
 	state.time += 1;
 	state.balance += state.salary;
 	if (purchase(state.nextItem)) {
-		selectNextItem(itemList, state.inventory);
+		state.nextItem = selectNextItem(itemList, state.inventory);
 		renderInv(); // Makes purchase if possible and if so rerenders the inventory.
 	}
 	renderTimerDisplay(state.time, state.salary);
+
+	if (DEBUG) console.log(`Current balance: ${state.balance}`); // debug
 }
 
 /**
