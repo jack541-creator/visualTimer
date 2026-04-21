@@ -121,14 +121,14 @@ export function selectNextItem(itemList, inventory) {
 		else nextItemType = "cheap"; // In any other case just buy a cheap item
 	}
 
-	let nextItem = selectLeastOwned(itemList, inventory, nextItemType);
+	let nextItem = itemList[nextItemType][Math.floor(Math.random() * itemList[nextItemType].length)] // Selects a random item of the appropriate type.
 
 	if (DEBUG) console.log(`Selected: ${nextItem.name}`); // debug
 	return nextItem;
 }
 
 /**
- * Returns the item of a given type in itemList list of which we have the least of in inventory.
+ * CURRENTLY UNUSED. Returns the item of a given type in itemList list of which we have the least of in inventory.
  * If there is 1 or more items that we do not currently own it returns the first of these.
  * @param {array} itemList List of dictionaries of item types available for purchase.
  * @param {array} inventory List of currently owned items.
@@ -193,7 +193,7 @@ function getInvTypeSpread(inventory) {
 }
 
 /**
- * Returns the number of item that we have in our inventory.
+ * CURRENTLY UNUSED. Returns the number of item that we have in our inventory.
  * @param {object} item An item dictionary.
  * @param {list} inventory List of currently owned items.
  * @returns The number of item in inventory.

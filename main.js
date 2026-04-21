@@ -21,7 +21,7 @@ export const itemList = {
 		{name: "nuggets", price: 7, type: "normal"},
 		{name: "happyMeal", price: 8, type: "normal"}
 	],
-	expsensive: [
+	expensive: [
 		{name: "deluxe_bigMac", price: 10, type: "expensive"},
 		{name: "doubleBacon&Cheese", price: 12, type: "expensive"},
 		{name: "deluxe_ultraHamburger", price: 20, type: "expensive"}
@@ -31,7 +31,7 @@ export const itemList = {
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
-	salary: 0.5, // Salary in $/s
+	salary: 5, // Salary in $/s
 	balance: 0,
 	inventory: [],
 	nextItem: null,

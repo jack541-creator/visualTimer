@@ -15,10 +15,9 @@ const earningsDisplay = document.getElementById("earnings-display");
 export function tick() {
 	state.time += 1;
 	state.balance += state.salary;
-	if (purchase(state.nextItem)) {
-		state.nextItem = selectNextItem(itemList, state.inventory);
-		renderInv(); // Makes purchase if possible and if so rerenders the inventory.
-	}
+	while (purchase(state.nextItem)) // Purchase as much as possible according to the guidelines.
+	state.nextItem = selectNextItem(itemList, state.inventory);
+	renderInv(); // Makes purchase if possible and if so rerenders the inventory.
 	renderTimerDisplay(state.time, state.salary);
 
 	if (DEBUG) console.log(`Current balance: ${state.balance}\n\n`); // debug
