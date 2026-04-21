@@ -1,6 +1,6 @@
 // This file contains functions relevant to rendering.
 
-import { state } from "./main.js"
+import { state, DEBUG } from "./main.js"
 
 const itemDisplay = document.getElementById("item-display");
 const timeDisplay = document.getElementById("time-display");
@@ -33,6 +33,8 @@ export function renderTimerDisplay(time, salary) {
  * Renders the current inventory in the html.
  */
 export function renderInv() {
+	if (DEBUG) console.log("Rending inventory."); // debug
+
 	// Note: renderedItem and renderedInv refer to html elements as opposed to item and inventory which are data structures.
 	let renderedInv = itemDisplay.children;
 
@@ -91,6 +93,8 @@ function isRendered(item, renderedInv) {
  * @param {*} item 
  */
 function renderItem(item) { // TEMP version
+	if (DEBUG) console.log("Rendering item"); // debug
+
 	console.log("Rendering Item"); // DEBUG
 
 	const renderedItem = document.createElement("div");

@@ -24,7 +24,7 @@
  * 	3. REPEAT ON TICK
  */
 
-import { state } from "./main.js";
+import { state, DEBUG } from "./main.js";
 
 /**
  * Selects the next item that should be purchased with the following guidelines.
@@ -37,6 +37,8 @@ import { state } from "./main.js";
  * @returns Returns the next item to be purchased (dictionary.)
  */
 export function selectNextItem(itemList, inventory) {
+	if (DEBUG) console.log("Selecting next item to purchase"); // debug
+
 	let nextItemType = null;
 
 	if (itemList.length <= 5) nextItemType = "cheap"; // If we have 5 or less item buy a cheap item
@@ -57,6 +59,8 @@ export function selectNextItem(itemList, inventory) {
  * @returns true / false
  */
 export function purchase(item) {
+	if (DEBUG) console.log("Attempting to purchase item"); // debug
+
 	let purchased = null;
 
 	// Check if we can afford an item. If so we purchase it.
@@ -102,8 +106,9 @@ function getInvValueByType(inventory, type) {
  * @param {object} item The item (dict) to purchase.
  */
 function makePurchase(item) {
-	// Sell items of lower type until we can afford the item.
+	if (DEBUG) console.log("Making purchase."); // debug
 
+	// Sell items of lower type until we can afford the item.
 	// Presumably if the item is cheap then we should be able to afford it at this point without selling.
 	let sellType = null;
 	if (item.type === "normal") sellType = "cheap";
@@ -122,6 +127,9 @@ function makePurchase(item) {
 	newItem.id = `item_${state.nextIdx}`; // We make a version of the purchased item with an index to keep track of it.
 	state.nextIdx++; // We update the master index.
 	state.inventory.pop(newItem);
+
+	if (DEBUG) console.log(`Current Inventory: ${state.inventory}`); // debug
+
 }
 
 

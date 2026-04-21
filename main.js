@@ -7,6 +7,8 @@ const btnPause = document.getElementById("btn-pause");
 const btnReset = document.getElementById("btn-reset");
 
 
+export const DEBUG = true;
+
 // TEMP: TODO create functions to parse this from csv data
 export const itemList = {
 	cheap: [
