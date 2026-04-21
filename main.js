@@ -1,5 +1,6 @@
 import * as timer from "./timer.js";
 import { selectNextItem } from "./purchase.js";
+import { getItemList } from "./itemListParsing.js";
 
 
 const btnPlay = document.getElementById("btn-play");
@@ -9,7 +10,8 @@ const btnReset = document.getElementById("btn-reset");
 
 export const DEBUG = true;
 
-// TEMP: TODO create functions to parse this from csv data
+export const itemList = await getItemList();
+/*
 export const itemList = {
 	cheap: [
 		{name: "ketchup", price: 0.5, type: "cheap"},
@@ -27,11 +29,12 @@ export const itemList = {
 		{name: "deluxe_ultraHamburger", price: 20, type: "expensive"}
 	]
 };
+*/
 
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
-	salary: 5, // Salary in $/s
+	salary: 0.1, // Salary in $/s
 	balance: 0,
 	inventory: [],
 	nextItem: null,
