@@ -14,7 +14,11 @@ export async function getItemList() {
 		});
 	});
 
-	let sortedData = parsedData.data.sort((a, b) => Number(a.price) - Number(b.price)); // Sort by price
+	let toNumberData = parsedData.data.map(item => ({ // Convert the price to number type
+		name: item.name,
+		price: Number(item.price)
+	}))
+	let sortedData = toNumberData.sort((a, b) => a.price - b.price); // Sort by price
 	let cheapLimit = sortedData.length * 0.3;
 	let normalLimit = sortedData.length * 0.6;
 
