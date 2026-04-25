@@ -37,10 +37,10 @@ export function renderInv() {
 function renderItem(item) { // TEMP version
 	if (DEBUG) console.log(`Rendering ${item.name}: ${item.id}`); // debug
 
-	const renderedItem = document.createElement("p");
+	const renderedItem = document.createElement("img");
 
-	renderedItem.textContent = `${item.name}\n${item.id}`;
-	renderedItem.id = item.id;
+	renderedItem.src = `./images/${item.name}.webp`;
+	renderedItem.width = 150
 
 	itemDisplay.appendChild(renderedItem);
 }
