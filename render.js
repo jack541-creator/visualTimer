@@ -20,6 +20,7 @@ export function renderInv() {
 		let renderedItem = renderedInv[i];
 		if (!isOwnedRendered(renderedItem, state.inventory)) {
 			if (DEBUG) console.log(`Unrendering ${renderedItem.id}`) // debug
+			bootstrap.Tooltip.getInstance(renderedItem).dispose(); // Remove the tooltip
 			renderedItem.remove();
 		}
 	}
@@ -41,12 +42,19 @@ function renderItem(item) { // TEMP version
 
 	renderedItem.id = item.id;
 	renderedItem.src = `./images/${item.name}.webp`;
-	renderedItem.width = 150;
+	renderedItem.width = 250;
 	renderedItem.style.position = "absolute";
 	renderedItem.style.left = `${Math.random() * 70}%`;
 	renderedItem.style.top = `${Math.random() * 70}%`;
+	renderedItem.classList.add("img-hover-border");
 
-	itemDisplay.appendChild(renderedItem);
+	// Set tooltip data
+	renderedItem.setAttribute("data-bs-toggle", "tooltip");
+	renderedItem.setAttribute("data-bs-placement", "top");
+	renderedItem.setAttribute("data-bs-title", `${item.name}\n$${item.price.toFixed(2)}`);
+
+	itemDisplay.appendChild(renderedItem); // Add item
+	new bootstrap.Tooltip(renderedItem);
 }
 
 /**

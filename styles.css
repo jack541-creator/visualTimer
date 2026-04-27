@@ -1,0 +1,7 @@
+.bg-image {
+	background: url("images/background.png") center / cover no-repeat;
+}
+
+.img-hover-border:hover {
+	filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
+}
