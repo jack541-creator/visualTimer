@@ -5,3 +5,16 @@
 .img-hover-border:hover {
 	filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
 }
+
+.custom-text {
+	font-family: monospace;
+	color: white;
+}
+
+#item-display {
+	margin-top: 7vh;
+	width: 85vw;
+	height: 50vh;
+	border-radius: 50%;
+	
+}

@@ -8,6 +8,8 @@ import { state, itemList, DEBUG } from "./main.js"
 
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
+const ding = new Audio('./audio/cashRegister.mp3')
+ding.volume = .3;
 
 /**
  * Actions by the program every set interval (1 second). This function links the timer to the wider functionality of the program by attempting to make purhcases and rendering then when succesful.
@@ -15,7 +17,11 @@ const earningsDisplay = document.getElementById("earnings-display");
 export function tick() {
 	state.time += 1;
 	state.balance += state.salary;
-	while (purchase(state.nextItem)) // Purchase as much as possible according to the guidelines.
+
+	let purchased = false;
+	while (purchase(state.nextItem)) purchased = true; // Purchase as much as possible according to the guidelines.
+	if (purchased) ding.play(); // If we purchased at least 1 item play the ding sound.
+
 	state.nextItem = selectNextItem(itemList, state.inventory);
 	renderInv(); // Makes purchase if possible and if so rerenders the inventory.
 	renderTimerDisplay(state.time, state.salary);
