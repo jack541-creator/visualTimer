@@ -15,7 +15,7 @@ export const itemList = await getItemList();
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
-	salary: 1, // Salary in $/s
+	salary: 0.009375, // Salary in $/s
 	balance: 0,
 	inventory: [],
 	nextItem: null,

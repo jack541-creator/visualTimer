@@ -16,5 +16,8 @@
 	width: 85vw;
 	height: 50vh;
 	border-radius: 50%;
-	
+}
+
+#timer {
+	z-index: 5;
 }
