@@ -4,7 +4,7 @@ import {purchase, selectNextItem } from "./purchase.js"
 import {renderTimerDisplay, renderInv} from "./render.js"
 
 
-import { state, itemList, DEBUG } from "./main.js"
+import { state, itemList, DEBUG, salaryInput } from "./main.js"
 
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
@@ -15,8 +15,12 @@ ding.volume = .3;
  * Actions by the program every set interval (1 second). This function links the timer to the wider functionality of the program by attempting to make purhcases and rendering then when succesful.
  */
 export function tick() {
-	state.time += 1;
-	state.balance += state.salary;
+	let elapsedTime = Math.round((performance.now() - state.latestTime) / 1000);
+
+	state.time += 1 * elapsedTime;
+	state.balance += state.salary * elapsedTime;
+
+	state.latestTime = performance.now()
 
 	let purchased = false;
 	while (purchase(state.nextItem)) purchased = true; // Purchase as much as possible according to the guidelines.
@@ -37,6 +41,7 @@ export function play() {
 	if (DEBUG) console.log("\nPlaying\n");
 
 	if (state.timerId) return; // Does nothing if the timer is running
+	state.latestTime = performance.now();
 	state.timerId = setInterval(tick, 1000) // Refresh rate in miliseconds
 }
 
@@ -66,3 +71,22 @@ export function reset() {
 	renderInv(); // Resets inventory display
 	state.nextItem = selectNextItem();
 }
+
+/**
+ * Handles the salary input field
+ */
+export function changeSalary() {
+	let input = Number(salaryInput.value);
+	if (isNaN(input)) {
+		salaryInput.classList.remove("no-border");
+		salaryInput.classList.remove("green-border");
+		salaryInput.classList.add("red-border");
+	}
+	else {
+	state.salary = input / 3600;
+	salaryInput.value = String(input + ' $/hour');
+	salaryInput.classList.remove("no-border");
+	salaryInput.classList.remove("red-border");
+	salaryInput.classList.add("green-border");}
+}
+

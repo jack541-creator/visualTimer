@@ -11,6 +11,18 @@
 	color: white;
 }
 
+.no-border {
+	border: none;
+}
+
+.green-border {
+	border: 3px solid green;
+}
+
+.red-border {
+		border: 3px solid red;
+}
+
 #item-display {
 	margin-top: 7vh;
 	width: 85vw;
@@ -20,4 +32,19 @@
 
 #timer {
 	z-index: 5;
+}
+
+#salary-input-div {
+	width: 15vw;
+	font-family: monospace;
+}
+
+#salary-input {
+	background-color: rgba(255, 255, 255, 0.7);
+	font-size: larger;
+	
+}
+
+#salary-input:focus {
+	outline: black;
 }

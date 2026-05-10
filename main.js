@@ -6,20 +6,21 @@ import { getItemList } from "./itemListParsing.js";
 const btnPlay = document.getElementById("btn-play");
 const btnPause = document.getElementById("btn-pause");
 const btnReset = document.getElementById("btn-reset");
+export const salaryInput = document.getElementById("salary-input")
 
 
 export const DEBUG = true;
 export const itemList = await getItemList();
 
-
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
-	salary: 0.009375, // Salary in $/s
+	salary: 0, // Salary in $/s
 	balance: 0,
 	inventory: [],
 	nextItem: null,
-	nextId: 0
+	nextId: 0,
+	latestTime: 0
 };
 
 state.nextItem = selectNextItem(itemList, state.inventory);
@@ -28,3 +29,4 @@ state.nextItem = selectNextItem(itemList, state.inventory);
 btnPlay.addEventListener("click", timer.play);
 btnPause.addEventListener("click", timer.pause);
 btnReset.addEventListener("click", timer.reset);
+salaryInput.addEventListener("blur", timer.changeSalary)
