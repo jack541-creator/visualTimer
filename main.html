@@ -19,10 +19,20 @@
 	<script defer type="module" src="timer.js"></script>
 	<script defer type="module" src="main.js"></script>
 
-	<div id="salary-input-div" class="container mt-2 row align-items-start">
-		<form autocomplete="off">
-			<div class="mb-3">
+	<div id="options-div" class="mt-2">
+		<form autocomplete="off" class="ms-2 d-flex gap-2">
+			<div class="col-auto">
 				<input type="text" class="no-border" id="salary-input" placeholder="0 $/hour">
+			</div>
+			<div class="dropdown">
+				<button id="item-set-button" class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+					Item Set
+				</button>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item dropdown-active" href="#">Action</a></li>
+						<li><a class="dropdown-item" href="#">Another action</a></li>
+						<li><a class="dropdown-item" href="#">Something else here</a></li>
+					</ul>
 			</div>
 		</form>
 	</div>

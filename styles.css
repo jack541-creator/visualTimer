@@ -1,50 +1,64 @@
-.bg-image {
-	background: url("images/background.png") center / cover no-repeat;
-}
-
-.img-hover-border:hover {
-	filter: drop-shadow(0 0 8px rgba(0,0,0,0.6));
-}
-
-.custom-text {
-	font-family: monospace;
-	color: white;
-}
-
+/* Utility borders */
 .no-border {
-	border: none;
+    border: none;
 }
 
 .green-border {
-	border: 3px solid green;
+    border: 3px solid green;
 }
 
 .red-border {
-		border: 3px solid red;
+    border: 3px solid red;
 }
 
+/* Backgrounds and images */
+.bg-image {
+    background: url("images/background.png") center / cover no-repeat;
+}
+
+.img-hover-border:hover {
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.6));
+}
+
+/* Text and font */
+.custom-text,
+#options-div {
+    font-family: monospace;
+    color: white;
+}
+
+/* Dropdowns */
+.dropdown-menu {
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+.dropdown-active {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Display areas */
 #item-display {
-	margin-top: 7vh;
-	width: 85vw;
-	height: 50vh;
-	border-radius: 50%;
+    border-radius: 50%;
+    height: 50vh;
+    margin-top: 7vh;
+    width: 85vw;
 }
 
 #timer {
-	z-index: 5;
+    z-index: 5;
 }
 
-#salary-input-div {
-	width: 15vw;
-	font-family: monospace;
-}
-
+/* Inputs and buttons */
 #salary-input {
-	background-color: rgba(255, 255, 255, 0.7);
-	font-size: larger;
-	
+    background-color: rgba(255, 255, 255, 0.7);
+    font-size: larger;
+    width: 10vw;
 }
 
 #salary-input:focus {
-	outline: black;
+    outline: 2px solid black;
+}
+
+#item-set-button {
+    background-color: rgba(255, 255, 255, 0.7);
 }
