@@ -1,6 +1,6 @@
 import * as timer from "./timer.js";
 import { selectNextItem } from "./purchase.js";
-import { getItemList } from "./itemListParsing.js";
+import { getItemList, loadItemSetOptions } from "./setup.js";
 
 
 const btnPlay = document.getElementById("btn-play");
@@ -18,11 +18,13 @@ export const state = {
 	nextItem: null,
 	nextId: 0,
 	latestTime: 0,
-	itemSet: "McDonalds"
+	itemSet: null
 };
 
 export const DEBUG = true;
+await loadItemSetOptions();
 export const itemList = await getItemList(state.itemSet);
+
 
 state.nextItem = selectNextItem(itemList, state.inventory);
 
