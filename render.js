@@ -41,7 +41,7 @@ function renderItem(item) { // TEMP version
 	const renderedItem = document.createElement("img");
 
 	renderedItem.id = item.id;
-	renderedItem.src = `./images/${item.name}.webp`;
+	renderedItem.src = `./images/${state.itemSet}/${item.name}.webp`;
 	renderedItem.width = 250;
 	renderedItem.style.position = "absolute";
 	renderedItem.style.left = `${Math.random() * 70}%`;

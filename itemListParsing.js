@@ -5,9 +5,9 @@ import { DEBUG } from "./main.js";
  * NEED TO UPDATE FOR FUTURE LISTS. Parses csv files into a properly formated item lists. Adds a tag to each item to specify type (cheap / normal / expensive).
  * @returns Formatted item list.
  */
-export async function getItemList() {
+export async function getItemList(itemListName) {
 	const parsedData = await new Promise((resolve) => {
-		Papa.parse("/itemLists/McDonalds.csv", {
+		Papa.parse(`/itemLists/${itemListName}.csv`, {
 			download: true,
 			header : true,
 			complete: resolve

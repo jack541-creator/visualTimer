@@ -9,9 +9,6 @@ const btnReset = document.getElementById("btn-reset");
 export const salaryInput = document.getElementById("salary-input")
 
 
-export const DEBUG = true;
-export const itemList = await getItemList();
-
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
@@ -20,8 +17,12 @@ export const state = {
 	inventory: [],
 	nextItem: null,
 	nextId: 0,
-	latestTime: 0
+	latestTime: 0,
+	itemSet: "McDonalds"
 };
+
+export const DEBUG = true;
+export const itemList = await getItemList(state.itemSet);
 
 state.nextItem = selectNextItem(itemList, state.inventory);
 
@@ -30,3 +31,9 @@ btnPlay.addEventListener("click", timer.play);
 btnPause.addEventListener("click", timer.pause);
 btnReset.addEventListener("click", timer.reset);
 salaryInput.addEventListener("blur", timer.changeSalary)
+
+/**
+ * ITEM SET SELECTOR
+ * I'm using a custom UI so every option is essentially a button. We store the current itemSet
+ * in state as a string which will be part of the path to locate the csv file and the images
+ */
