@@ -12,6 +12,7 @@ const btnDropdown = document.getElementById("item-set-button")
 export const salaryInput = document.getElementById("salary-input")
 
 
+
 export const state = {
 	timerId: null, // Is null when the timer isn't running
 	time: 0, // Number of elapsed seconds
@@ -56,6 +57,7 @@ for (const itemSetOption of document.getElementsByClassName("dropdown-item")) {
 		itemSetOption.classList.add("dropdown-active");
 
 		sellInventory();
+		renderInv();
 		state.itemList = await getItemList(newItemSet);
 		state.nextItem = selectNextItem(state.itemList, state.inventory);
 		

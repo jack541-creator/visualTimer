@@ -210,9 +210,14 @@ function amountInInventory(item, inventory) {
 	return count;
 }
 
+/**
+ * Empties inventory and adds total value to balance.
+ */
 export function sellInventory() {
+	let totalValue = 0;
 	for (let i = state.inventory.length - 1; i >= 0; i--) {
-		state.balance += state.inventory[i].price;
+		totalValue += state.inventory[i].price;
 		state.inventory.pop();
 	}
+	state.balance += totalValue;
 }

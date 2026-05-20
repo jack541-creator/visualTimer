@@ -51,6 +51,10 @@ export async function getItemList(itemListName) {
 	return itemList;
 }
 
+/**
+ * Loads itemSet options and renders them as part of the itemSet menu dropdown. It reads from
+ * itemSets/itemSets.json.
+ */
 export async function loadItemSetOptions() {
 	const res = await fetch("itemSets/itemSets.json");
 	const itemSets = await res.json();

@@ -22,6 +22,8 @@ export function tick() {
 
 	state.latestTime = performance.now()
 
+	if (state.nextItem = null) state.nextItem = selectNextItem(state.itemList, state.inventory); // Protect against bug of nextItem becoming null.
+
 	let purchasedAtLeastOne = false;
 	let purchasing = true;
 
@@ -81,18 +83,18 @@ export function reset() {
 }
 
 /**
- * Handles the salary input field
+ * Handles the salary input field. Passes the value along to the backend and changes visuals on the frontend.
  */
 export function changeSalary() {
-	let input = Number(salaryInput.value);
-	if (isNaN(input)) {
+	let value = Number(String(salaryInput.value).replace(" $/hour", ""));
+	if (isNaN(value)) {
 		salaryInput.classList.remove("no-border");
 		salaryInput.classList.remove("green-border");
 		salaryInput.classList.add("red-border");
 	}
 	else {
-	state.salary = input / 3600;
-	salaryInput.value = String(input + ' $/hour');
+	state.salary = value / 3600;
+	salaryInput.value = String(value + ' $/hour');
 	salaryInput.classList.remove("no-border");
 	salaryInput.classList.remove("red-border");
 	salaryInput.classList.add("green-border");}
