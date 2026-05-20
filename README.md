@@ -1,8 +1,5 @@
 # visualTimer
-
-visualTimer is a lightweight browser app that turns worked time into purchasing power.
-You enter an hourly pay value (any numeric value you want to model), start the timer, and the app buys items from a selected catalog as your balance grows.
-Purchased items appear on screen as images with tooltips.
+visualTimer is a light weight timer web app that calculates your earnings over time based on your salary and displays a set of items you could purchase with those earnings.
 
 ## Features
 
