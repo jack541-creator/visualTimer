@@ -22,11 +22,19 @@ export function tick() {
 
 	state.latestTime = performance.now()
 
-	let purchased = false;
-	while (purchase(state.nextItem)) purchased = true; // Purchase as much as possible according to the guidelines.
-	if (purchased) ding.play(); // If we purchased at least 1 item play the ding sound.
+	let purchasedAtLeastOne = false;
+	let purchasing = true;
 
-	state.nextItem = selectNextItem(state.itemList, state.inventory);
+	while(purchasing) { // Purchase and select new nextItem as many times as possible.
+		if (purchase(state.nextItem)) {
+			purchasedAtLeastOne = true;
+			state.nextItem = selectNextItem(state.itemList, state.inventory); // Only select a new item if you purchase
+		}
+		else purchasing = false;
+	}
+
+	if (purchasedAtLeastOne) ding.play(); // Only ding if you've purchased
+
 	renderInv(); // Makes purchase if possible and if so rerenders the inventory.
 	renderTimerDisplay(state.time, state.salary);
 
