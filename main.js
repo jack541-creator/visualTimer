@@ -1,11 +1,14 @@
 import * as timer from "./timer.js";
 import { selectNextItem } from "./purchase.js";
 import { getItemList, loadItemSetOptions } from "./setup.js";
+import { sellInventory } from "./purchase.js";
+import { renderInv } from "./render.js";
 
 
 const btnPlay = document.getElementById("btn-play");
 const btnPause = document.getElementById("btn-pause");
 const btnReset = document.getElementById("btn-reset");
+const btnDropdown = document.getElementById("item-set-button")
 export const salaryInput = document.getElementById("salary-input")
 
 
@@ -18,15 +21,14 @@ export const state = {
 	nextItem: null,
 	nextId: 0,
 	latestTime: 0,
-	itemSet: null
+	itemSet: null,
+	itemList: []
 };
 
 export const DEBUG = true;
 await loadItemSetOptions();
-export const itemList = await getItemList(state.itemSet);
-
-
-state.nextItem = selectNextItem(itemList, state.inventory);
+state.itemList = await getItemList(state.itemSet);
+state.nextItem = selectNextItem(state.itemList, state.inventory);
 
 // Event Listeners
 btnPlay.addEventListener("click", timer.play);
@@ -39,3 +41,19 @@ salaryInput.addEventListener("blur", timer.changeSalary)
  * I'm using a custom UI so every option is essentially a button. We store the current itemSet
  * in state as a string which will be part of the path to locate the csv file and the images
  */
+
+for (const itemSetOption of document.getElementsByClassName("dropdown-item")) {
+	itemSetOption.addEventListener("click", () => {
+
+		let newItemSet = itemSetOption.textContent
+		if (DEBUG) console.log(`Changing itemSet to ${itemSetOption.textContent}`);
+
+		state.itemSet = newItemSet; // Assign new set in backend
+		btnDropdown.textContent = newItemSet // Assign selection visually
+
+		sellInventory();
+		state.itemList = getItemList(newItemSet);
+		state.nextItem = selectNextItem(state.itemList, state.inventory);
+		
+	})
+} 

@@ -121,7 +121,7 @@ export function selectNextItem(itemList, inventory) {
 		else nextItemType = "cheap"; // In any other case just buy a cheap item
 	}
 
-	let nextItem = itemList[nextItemType][Math.floor(Math.random() * itemList[nextItemType].length)] // Selects a random item of the appropriate type.
+	let nextItem = state.itemList[nextItemType][Math.floor(Math.random() * state.itemList[nextItemType].length)] // Selects a random item of the appropriate type.
 
 	if (DEBUG) console.log(`Selected: ${nextItem.name}`); // debug
 	return nextItem;
@@ -207,4 +207,11 @@ function amountInInventory(item, inventory) {
 	}
 
 	return count;
+}
+
+export function sellInventory() {
+	for (let i = state.inventory.length - 1; i >= 0; i--) {
+		state.balance += state.inventory[i].price;
+		state.inventory.pop();
+	}
 }

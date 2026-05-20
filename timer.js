@@ -4,7 +4,7 @@ import {purchase, selectNextItem } from "./purchase.js"
 import {renderTimerDisplay, renderInv} from "./render.js"
 
 
-import { state, itemList, DEBUG, salaryInput } from "./main.js"
+import { state, DEBUG, salaryInput } from "./main.js"
 
 const timeDisplay = document.getElementById("time-display");
 const earningsDisplay = document.getElementById("earnings-display");
@@ -26,7 +26,7 @@ export function tick() {
 	while (purchase(state.nextItem)) purchased = true; // Purchase as much as possible according to the guidelines.
 	if (purchased) ding.play(); // If we purchased at least 1 item play the ding sound.
 
-	state.nextItem = selectNextItem(itemList, state.inventory);
+	state.nextItem = selectNextItem(state.itemList, state.inventory);
 	renderInv(); // Makes purchase if possible and if so rerenders the inventory.
 	renderTimerDisplay(state.time, state.salary);
 
