@@ -121,6 +121,7 @@ export function selectNextItem(itemList, inventory) {
 		else nextItemType = "cheap"; // In any other case just buy a cheap item
 	}
 
+	console.log(state.itemList)
 	let nextItem = state.itemList[nextItemType][Math.floor(Math.random() * state.itemList[nextItemType].length)] // Selects a random item of the appropriate type.
 
 	if (DEBUG) console.log(`Selected: ${nextItem.name}`); // debug

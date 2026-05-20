@@ -43,16 +43,20 @@ salaryInput.addEventListener("blur", timer.changeSalary)
  */
 
 for (const itemSetOption of document.getElementsByClassName("dropdown-item")) {
-	itemSetOption.addEventListener("click", () => {
+	itemSetOption.addEventListener("click", async () => {
 
 		let newItemSet = itemSetOption.textContent
 		if (DEBUG) console.log(`Changing itemSet to ${itemSetOption.textContent}`);
 
 		state.itemSet = newItemSet; // Assign new set in backend
-		btnDropdown.textContent = newItemSet // Assign selection visually
+
+		 // Assign selection visually
+		btnDropdown.textContent = newItemSet;
+		document.getElementsByClassName("dropdown-active")[0].classList.remove("dropdown-active");
+		itemSetOption.classList.add("dropdown-active");
 
 		sellInventory();
-		state.itemList = getItemList(newItemSet);
+		state.itemList = await getItemList(newItemSet);
 		state.nextItem = selectNextItem(state.itemList, state.inventory);
 		
 	})
