@@ -22,7 +22,7 @@ export function tick() {
 
 	state.latestTime = performance.now()
 
-	if (state.nextItem = null) state.nextItem = selectNextItem(state.itemList, state.inventory); // Protect against bug of nextItem becoming null.
+	if (state.nextItem == null) state.nextItem = selectNextItem(state.itemList, state.inventory); // Protect against bug of nextItem becoming null.
 
 	let purchasedAtLeastOne = false;
 	let purchasing = true;
@@ -79,7 +79,7 @@ export function reset() {
 	renderTimerDisplay(state.time, state.salary); // Resets the time display
 	state.inventory = []; // Resets inventory
 	renderInv(); // Resets inventory display
-	state.nextItem = selectNextItem();
+	state.nextItem = selectNextItem(state.itemList, state.inventory);
 }
 
 /**

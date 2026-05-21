@@ -33,7 +33,7 @@ import { state, DEBUG } from "./main.js";
  * @returns true / false
  */
 export function purchase(item) {
-	if (DEBUG) console.log("Attempting to purchase item"); // debug
+	if (DEBUG) console.log(`Attempting to purchase ${item}`); // debug
 
 	let purchased = null;
 
