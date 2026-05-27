@@ -46,7 +46,10 @@ export async function getItemList(itemListName) {
 		}
 	}
 
-	if (DEBUG) console.log(itemList);
+	if (DEBUG) {
+		console.log("Item list parsed");
+		console.log(itemList);
+	}
 
 	return itemList;
 }

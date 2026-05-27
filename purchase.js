@@ -33,7 +33,7 @@ import { state, DEBUG } from "./main.js";
  * @returns true / false
  */
 export function purchase(item) {
-	if (DEBUG) console.log(`Attempting to purchase ${item}`); // debug
+	if (DEBUG) console.log(`Attempting to purchase ${item.name}`); // debug
 
 	let purchased = null;
 
@@ -42,8 +42,12 @@ export function purchase(item) {
 		if (state.balance >= item.price) {
 			makePurchase(item);
 			purchased = true;
+			if (DEBUG) console.log(`Succesfully purchased ${item.name}`)
 		}
-		else purchased = false;
+		else {
+			purchased = false;
+			if (DEBUG) console.log(`Could not purchase ${item.name}`)
+		}
 	}
 	else if (item.type === "normal") {
 		if (state.balance + getInvValueByType(state.inventory, "cheap") >= item.price) {
@@ -121,7 +125,6 @@ export function selectNextItem(itemList, inventory) {
 		else nextItemType = "cheap"; // In any other case just buy a cheap item
 	}
 
-	console.log(state.itemList)
 	let nextItem = state.itemList[nextItemType][Math.floor(Math.random() * state.itemList[nextItemType].length)] // Selects a random item of the appropriate type.
 
 	if (DEBUG) console.log(`Selected: ${nextItem.name}`); // debug

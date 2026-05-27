@@ -1,7 +1,7 @@
 import * as timer from "./timer.js";
 import { selectNextItem } from "./purchase.js";
 import { getItemList, loadItemSetOptions } from "./setup.js";
-import { sellInventory } from "./purchase.js";
+import { sellInventory, purchase } from "./purchase.js";
 import { renderInv } from "./render.js";
 
 
@@ -58,8 +58,20 @@ for (const itemSetOption of document.getElementsByClassName("dropdown-item")) {
 
 		sellInventory();
 		renderInv();
+
+		// Change backend item list
 		state.itemList = await getItemList(newItemSet);
 		state.nextItem = selectNextItem(state.itemList, state.inventory);
-		
+
+		// Restock Inventory
+		let purchasing = true;
+		while(purchasing) { // Purchase and select new nextItem as many times as possible.
+			if (purchase(state.nextItem)) {
+				state.nextItem = selectNextItem(state.itemList, state.inventory); // Only select a new item if you purchase
+			}
+			else purchasing = false;
+		}
+
+		renderInv();
 	})
 } 
